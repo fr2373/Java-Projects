@@ -1,0 +1,244 @@
+/* Portfolio
+ * Programmer:
+ * Purpose:
+ */
+
+
+public class Portfolio
+{
+  //Private instance variables
+  private String ticker;
+  
+  private String equityName;
+  
+  private int numOfShares;
+  
+  private int equityType;
+  
+  private String exchange;
+  
+  private double currentPrice;
+  
+  private double estimatedYearlyIncrease;
+  
+  private double dividendYield;
+  
+  private int paymentCycle;
+  
+  private double dividendAmount;
+  
+  private double currentValue;
+  
+  private double valueIn_Years;
+  
+  //Construct a Portfolio object
+  public Portfolio()
+  {
+    ticker = "N/A";
+    
+    equityName = "N/A";
+    
+    exchange = "N/A";
+  }
+  
+  //Private helper method
+  /* Calculate the current value of the equity
+   * @param N/A
+   * @return currentValue
+   */
+  private double calcCurrentValue()
+  {
+    currentValue = currentPrice * numOfShares;
+    
+    return currentValue;
+  }
+  
+  //Private helper method
+  /* Calculate the dividend amount for each dividend payment
+   * @param N/A
+   * @return dividendAmount
+   */
+  private double calcDividendAmount()
+  {
+    dividendAmount = (currentPrice * dividendYield) / paymentCycle;
+    
+    return dividendAmount;
+  }
+  
+  /* Calculate the value of your equity holding after n-years
+   * @ param n
+   * @return void
+   */ 
+  public void calcValueIn_Years(double n)
+  {
+    double dividendSum = 0.0;
+    
+    currentPrice = currentPrice + estimatedYearlyIncrease * n;
+    
+    for (int i = 1; i <= n; i++)
+    {
+      dividendSum = dividendSum + calcDividendAmount();
+    }
+    valueIn_Years = dividendSum + calcCurrentValue();
+  }
+  
+  //getter (accessor) methods
+  public String getTicker()
+  {
+    return ticker;
+  }
+  
+  public String getEquityName()
+  {
+    return equityName;
+  }
+  
+  public int getEquityType()
+  {
+    return equityType;
+  }
+  
+  public String getExchange()
+  {
+    return exchange;
+  }
+  
+  public double getEstimatedYearlyIncrease()
+  {
+    return estimatedYearlyIncrease;
+  }
+  
+  public double getCurrentPrice()
+  {
+    return currentPrice;
+  }
+  
+  public int getNumOfShares()
+  {
+    return numOfShares;
+  }
+  
+  public int getPaymentCycle()
+  {
+    return paymentCycle;
+  }
+  
+  public double getCurrentValue()
+  {
+    return currentValue;
+  }
+  
+  public double getDividendAmount()
+  {
+    return dividendAmount;
+  }
+  
+  public double getValueIn_Years()
+  {
+    return valueIn_Years;
+  }
+  
+  //Setter (mutator) methods for all non-computated fields
+  public void setNumOfShares(int sharesHeld) throws IllegalArgumentException
+  {
+    if (sharesHeld < 0)
+    {
+      throw new IllegalArgumentException("Please enter the number of shares held");
+    }
+    numOfShares = sharesHeld;
+  }
+  
+  public void setDividendYield(double percent) throws IllegalArgumentException
+  {
+    if (percent < 0)
+    {
+      throw new IllegalArgumentException("Please enter the dividend yield in percent");
+    }
+    dividendYield = percent;
+  }
+  
+  public void setEstimatedYearlyIncrease(double percent) throws IllegalArgumentException
+  {
+    if (percent < 0)
+    {
+      throw new IllegalArgumentException("Please enter the estimated yearly price increase in percent");
+    }
+    estimatedYearlyIncrease = percent;
+  }
+  
+  public void setCurrentPrice(double price) throws IllegalArgumentException
+  {
+    if (price < 0)
+    {
+      throw new IllegalArgumentException("Please enter the current equity price");
+    }
+    currentPrice = price;
+  }
+  
+  public void setEquityName(String name)
+  {
+    equityName = name;
+  }
+  
+  public void setTicker(String symbol)
+  {
+    ticker = symbol;
+  }
+  
+  public void setPaymentCycle(String length) throws IllegalArgumentException
+  {
+    if (length.equals("Yearly"))
+    {
+    paymentCycle = 1;
+    }
+    
+    else if (length.equals("Quarterly"))
+    {
+      paymentCycle = 4;
+    }
+    
+    else if (length.equals("Monthly"))
+    {
+      paymentCycle = 12;
+    }
+    
+    else
+    {
+      throw new IllegalArgumentException("Please enter valid payment cycle");
+    }
+  }
+  
+  public void setEquityType(String type) throws IllegalArgumentException
+  {
+    if (type.equals("stock"))
+    {
+      equityType = 0;
+    }
+    
+    else if (type.equals("EFT"))
+    {
+      equityType = 1;
+    }
+    
+    else if (type.equals("REIT"))
+    {
+      equityType = 2;
+    }
+    
+    else
+    {
+      throw new IllegalArgumentException("Please enter a valid Equity Type");
+    }
+  }
+  
+  public void setExchange(String exchangeName)
+  {
+    exchange = exchangeName;
+  }
+  
+  //toString method
+  public String toString()
+  {
+    return ticker + "," + equityName + "," + numOfShares + "," + equityType + "," + exchange + "," + currentPrice + "," + estimatedYearlyIncrease + "," + dividendYield + "," + paymentCycle;
+  }
+}
