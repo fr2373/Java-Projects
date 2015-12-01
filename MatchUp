@@ -1,0 +1,91 @@
+//Fahad Rashid
+//CSC 201-01PR
+//MatchUp
+//The purpose of this program is to help find errors with mismatching braces in Java programs.
+//The input of this program is the file to be processed.
+//The output of this program is the lines of text with the braces numbered.
+
+import java.util.Scanner;
+import java.io.*;
+
+public class MatchUp {
+  
+  //This is a private helper method that displays information about the programmer, the course, and the project.
+  private static void printHeading()
+  {
+    System.out.println("Fahad Rashid");
+    System.out.println("CSC 201-01PR Fall 2015");
+    System.out.println("Programming Project 5");
+    System.out.println("MatchUp");
+    System.out.println();
+  }
+
+    public static void main(String[] args) {
+      
+      /**print the heading for the program
+       * @ param - N/A
+       * @ return - void
+       */
+      printHeading();
+
+        try {
+            if (0 < args.length)
+            {
+              //Declare Important Variables.
+              int bracketCounter = 0; //Starting the count at 1 to avoid incrementing initially.
+              
+              //Create a file object.
+              File inputFile = new File(args[0]);
+              
+              //Open a scanner to read the file line by line.
+              Scanner readFile = new Scanner(inputFile);
+                            
+              //Read each line.
+              while (readFile.hasNextLine())
+              {
+                //Read the line.
+                String inputLine = readFile.nextLine();
+                
+                //Create a string builder to build the output line.
+                StringBuilder outputLine = new StringBuilder(inputLine);
+                 
+                //Go through each character to find the opening or closing bracket.
+                for (int i = 0; i < inputLine.length(); i++)
+                {
+                  //Check if the character is an opening brace.    
+                  if (inputLine.charAt(i) == '{')
+                  {
+                      //Increment the bracket Counter.
+                      bracketCounter++;
+
+                      //Add number to opening bracket.
+                      outputLine.insert(i+1, bracketCounter);
+                  }
+                  else if (inputLine.charAt(i) == '}') {    //If closing bracket.                      
+                      //Check to make sure bracket counter is not negative.
+                      if(bracketCounter < 0) {
+                          bracketCounter = 0;
+                      }
+
+                      //Add number to closing bracket.
+                      outputLine.insert(i+1, bracketCounter);                      
+
+                      //Decrement counter.
+                      bracketCounter--;
+                  }
+                }//End  for (int i = 0;...
+                System.out.println(outputLine);
+              }//End while(...
+                readFile.close();
+            }
+            else
+            {
+              System.out.println("No argument was given. Please try again.");
+            }            
+        }
+        catch(Exception ex)
+        {
+        
+        }
+    }
+}
