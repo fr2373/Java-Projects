@@ -1,0 +1,154 @@
+//Fahad Rashid
+//CSC 201-01PR
+//TempAnalysis
+//The purpose of this program is to calculate the average temperature for a given month and highlight the specific days
+//for which the temperature is above the average for three consecutive day
+
+
+import java.util.Arrays;
+import java.util.Scanner;
+import java.io.*;
+
+public class TempAnalysis
+{
+ //Private Variables
+ private final static String[] arrMonths30 = {"April", "June", "September", "November"};
+ private final static String[] arrMonths31 = {"January", "March", "May", "July", "August", "October", "December"}; 
+ private final static int setMax = 3;
+ 
+ //This is a private helper method that displays information about the programmer, the course, and the project.
+ private static void printHeading()
+ {
+   System.out.println("Fahad Rashid");
+   System.out.println("CSC 201-01PR Fall 2015");
+   System.out.println("Programming Project 00");
+   System.out.println("TempAnalysis");
+   System.out.println();
+ } 
+ 
+ //Main Function.
+ public static void main(String[] args)
+ {
+   
+ /**print the heading for the program
+  * @ param - N/A
+  * @ return - void
+  */ 
+  printHeading(); 
+   
+  //Declare Important Variables.
+  String monthName = "";
+  int numDaysInMonth = 0;
+  int[] dailyTemp = new int[31]; //Max size will always be 31.
+  String[] aboveAverageTemp = new String[31]; //Max size will always be 31.
+  int sumOfTemps = 0;
+  double avgTemp = 0.0;
+  int currentSetSize = 0;
+  
+  try {
+   //Make sure a single argument has been passed into the program.
+   if (args.length == 1) {
+    //The first argument is a filename, open it.
+    File inputFile = new File(args[0]);
+    
+    //Setup a scanner to read each line in the file.
+    Scanner readFile = new Scanner(inputFile);
+    
+    //The first line has the month, read it. 
+    monthName = readFile.nextLine(); 
+    
+    //Determine the number of days in that month
+    numDaysInMonth = numDaysInMonth(monthName);
+    
+    //Read the temperatures from the file.
+    int curIndex = 0;
+          while (readFile.hasNextLine()) { 
+           //Set Daily Temperature
+           dailyTemp[curIndex] = Integer.parseInt(readFile.nextLine());
+           
+           //Add Daily Temperature to total sum.
+           sumOfTemps += dailyTemp[curIndex];
+             
+           //Increment Index.
+           curIndex++;
+          }
+          
+          //Close the file.
+          readFile.close();
+          
+          //Calculate Average Temperature.
+          avgTemp = (double)sumOfTemps / numDaysInMonth; 
+          
+          //Calculate which temperatures are a part of the set.
+          Arrays.fill(aboveAverageTemp, "");
+          for(int nCurDay = 0; nCurDay < numDaysInMonth; nCurDay++) {
+           //Increment set for each temp greater than average.
+           if(dailyTemp[nCurDay] > avgTemp) {
+            currentSetSize++;
+           }
+           else {
+            //If the current set size is great than max set size, mark the temps with a +
+            if(currentSetSize >= setMax) {
+             for(int nCurIndex = nCurDay - currentSetSize; nCurIndex < nCurDay; nCurIndex++) {
+              aboveAverageTemp[nCurIndex] = "+";
+             }             
+            }
+            
+            //Reset current set Size.
+            currentSetSize = 0;            
+           }
+          }
+          
+          //Check to make sure the array did not just loop out.
+          if(currentSetSize >= setMax) {
+           for(int nCurIndex = numDaysInMonth - currentSetSize; nCurIndex < numDaysInMonth; nCurIndex++) {
+            aboveAverageTemp[nCurIndex] = "+";
+           }             
+          }
+
+          
+          //////////////////////////////////////////
+          //Output Information.
+          //////////////////////////////////////////
+          //Output Average Information.
+          System.out.println("The average temperature for " + monthName + " was " + String.format("%.2f", avgTemp));
+          
+          //Output Daily Temperature.
+          for(int nCurDay = 1; nCurDay <= numDaysInMonth; nCurDay++) {
+           System.out.println(String.format("%02d", nCurDay) + "   " + String.format("%02d", dailyTemp[nCurDay]) + " " + aboveAverageTemp[nCurDay]);
+          }
+   }
+   else {
+    //Message about number of arguments.
+   }
+  }
+  catch (Exception ex) {
+   
+  }
+ }  
+ 
+ /**
+  * 
+  * @param month
+  * @return
+  */
+ private static int numDaysInMonth(String month)
+ {
+  //Declare Important Variables.
+  int numDays = 0;
+  
+  //Check if the month is in the months containing 31 days.
+  if(Arrays.asList(arrMonths31).contains(month)) {
+   numDays = 31;
+  }
+  else if(Arrays.asList(arrMonths30).contains(month)) {
+   numDays = 30;
+  }
+  else {
+   numDays = 28;   
+  }  
+  
+  //Return number of days.
+  return numDays;
+ }
+}
