@@ -1,0 +1,79 @@
+//Fahad Rashid
+//CSC 201-01PR
+//Circle
+//The purpose of this program is to provide the methods to do area, diameter, and circumference calculations on circles
+//with a given radius.
+
+
+public class Circle
+{
+  //instance variable
+  private double radius;
+  
+  //constructors
+  public Circle(double aRadius)
+  {
+    setRadius(aRadius);
+  }
+  
+  public Circle()
+  {
+    this(1.0);
+  }
+  
+  //method that returns the diameter
+  public double diameter(double radius)
+  {
+    return 2 * radius;
+  }
+  
+  //method that returns the circumference
+  public double circumference(double radius)
+  {
+    return 2 * Math.PI * radius;
+  }
+  
+  //method that returns the area
+  public double area(double radius)
+  {
+    return Math.PI * Math.pow(radius, 2);
+  }
+  
+  //accessor methods
+  public double getDiameter()
+  {
+    return diameter(radius);
+  }
+  
+  public double getCircumference()
+  {
+    return circumference(radius);
+  }
+  
+  public double getArea()
+  {
+    return area(radius);
+  }
+  
+  public double getRadius()
+  {
+    return radius;
+  }
+  
+  //toSting method
+  public String toString()
+  {
+    return "The radius of the circle is " + radius;
+  }
+  
+  //mutator method
+  public void setRadius(double aRadius) throws IllegalArgumentException
+  {
+    if (aRadius <= 0)
+    {
+      throw new IllegalArgumentException("Radius must be greater than 0");
+    }
+    
+    radius = aRadius;
+  }
+}
